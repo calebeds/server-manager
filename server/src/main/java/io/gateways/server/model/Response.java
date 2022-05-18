@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
+
 @Data
 @SuperBuilder//User the builder and set the values in some dinamic way
 @JsonInclude(Include.NON_NULL)//Do not send null values because it may happen
