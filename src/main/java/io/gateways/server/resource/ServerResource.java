@@ -98,8 +98,8 @@ public class ServerResource {
     }
 
     @GetMapping(path = "/image/{filename}", produces = MediaType.IMAGE_PNG_VALUE)
-    public byte[] getServerImage(@PathVariable("id") String filename) throws IOException {
-        return Files.readAllBytes(Paths.get(System.getProperty("use.home") + "Downloads/images/" + filename));
+    public byte[] getServerImage(@PathVariable("filename") String filename) throws IOException {
+        return Files.readAllBytes(Paths.get(System.getProperty("user.home") + "/Downloads/images/" + filename));//Change this line in case you wanna put other icons
     }
 }
 

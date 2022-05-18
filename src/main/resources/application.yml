@@ -1,13 +1,13 @@
 spring:
     datasource:
         password: root
-        url: jdbc:mysql://localhost:3308/serverdb
+        url: jdbc:mysql://localhost:3308/testapp
         username: root
     jpa:
         hibernate:
             ddl-auto: create
         properties:
             hibernate:
-                dialect: org.hibernate.dialect.MySql8Dialect
+                dialect: org.hibernate.dialect.MySQL8Dialect
                 format_sql: true
         show-sql: true
