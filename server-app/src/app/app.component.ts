@@ -6,6 +6,7 @@ import { Status } from './enum/status.enum';
 import { AppState } from './interface/app-state';
 import { CustomResponse } from './interface/custom.response';
 import { Server } from './interface/server';
+import { NotificationService } from './service/notification.service';
 import { ServerService } from './service/server.service';
 
 @Component({
@@ -34,8 +35,7 @@ export class AppComponent implements OnInit {
 
 
 
-
-  constructor(private serverService: ServerService) {
+  constructor(private serverService: ServerService, private notificationService :NotificationService) {
 
   }
 
@@ -43,11 +43,13 @@ export class AppComponent implements OnInit {
     this.appState$ = this.serverService.servers$
       .pipe(
         map(response => {
+          this.notificationService.onDefault(response.message);
           this.dataSubject.next(response);//Saving the data on a behavior subject| Gets used on pingServer
           return { dataState: DataState.LOADED_STATE, appData: {...response, data: {servers: response.data.servers?.reverse()}} }
         }),
         startWith({ dataState: DataState.LOADING_STATE }),
         catchError((error: string) => {
+          this.notificationService.onError(error);
           return of({ dataState: DataState.ERROR_STATE, error });
         })
       )
@@ -58,16 +60,19 @@ export class AppComponent implements OnInit {
     this.appState$ = this.serverService.ping$(ipAddress)
       .pipe(
         map(response => {
+          this.notificationService.onDefault(response.message);
           const index = this.dataSubject.value!.data.servers!.findIndex(server => {
             return server!.id === response.data.server!.id //Just finding the id of the server we want to ping
           });
           this.dataSubject.value!.data.servers![index] = response.data.server!;
           this.filterSubject.next('');
+          this.notificationService.onDefault(response.message);
           return { dataState: DataState.LOADED_STATE, appData: this.dataSubject.value }
         }),
         startWith({ dataState: DataState.LOADED_STATE, appData: this.dataSubject.value}),//Now the dataSubject comes on to play
         catchError((error: string) => {
           this.filterSubject.next('');
+          this.notificationService.onError(error);
           return of({ dataState: DataState.ERROR_STATE, error });
         })
       )
@@ -84,11 +89,13 @@ export class AppComponent implements OnInit {
           document.getElementById('closeModal')?.click();
           this.isLoading.next(false);
           serverForm.resetForm({status: this.Status.SERVER_DOWN});
+          this.notificationService.onSuccess(response.message);
           return { dataState: DataState.LOADED_STATE, appData: this.dataSubject.value }
         }),
         startWith({ dataState: DataState.LOADED_STATE, appData: this.dataSubject.value}),//Now the dataSubject comes on to play
         catchError((error: string) => {
           this.isLoading.next(false);
+          this.notificationService.onError(error);
           return of({ dataState: DataState.ERROR_STATE, error });
         })
       )
@@ -100,10 +107,12 @@ export class AppComponent implements OnInit {
     this.appState$ = this.serverService.filter$(status, this.dataSubject.value)
       .pipe(
         map(response => {
+          this.notificationService.onDefault(response.message);
           return { dataState: DataState.LOADED_STATE, appData: response }
         }),
         startWith({ dataState: DataState.LOADED_STATE, appData: this.dataSubject.value}),//Now the dataSubject comes on to play
         catchError((error: string) => {
+          this.notificationService.onError(error);
           return of({ dataState: DataState.ERROR_STATE, error });
         })
       )
@@ -118,10 +127,12 @@ export class AppComponent implements OnInit {
               return s.id !== server.id
             })}}
           );
+          this.notificationService.onWarning(response.message);
           return { dataState: DataState.LOADED_STATE, appData: this.dataSubject.value }
         }),
         startWith({ dataState: DataState.LOADED_STATE, appData: this.dataSubject.value}),//Now the dataSubject comes on to play
         catchError((error: string) => {
+          this.notificationService.onError(error);
           return of({ dataState: DataState.ERROR_STATE, error });
         })
       )
@@ -142,5 +153,6 @@ export class AppComponent implements OnInit {
       downloadLink.click();
       document.body.removeChild(downloadLink);
     }
+    this.notificationService.onDefault('The Download Has Begun');
   }
 }
