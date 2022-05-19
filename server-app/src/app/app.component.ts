@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { BehaviorSubject, catchError, map, Observable, of, startWith } from 'rxjs';
 import { DataState } from './enum/data-state.enum';
@@ -12,10 +12,11 @@ import { ServerService } from './service/server.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush//Angular stops looking for changes!!! Instead he will only search for input, or observables, or event emitters, increasing performance. That's the reason the reactive approach is powerful
 })
 export class AppComponent implements OnInit {
-
+  //The reason why we used observables and behavior objects
   appState$!: Observable<AppState<CustomResponse>>;
   readonly DataState = DataState;
   readonly Status = Status;//The enum with status
