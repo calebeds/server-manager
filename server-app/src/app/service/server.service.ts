@@ -39,7 +39,7 @@ export class ServerService {
       );
 
   filter$ = (status: Status, response: CustomResponse): Observable<CustomResponse> =>
-    new Observable<CustomResponse>(
+    new Observable<CustomResponse | null>(
       subscriber => {
         console.log(response);
         subscriber.next(
@@ -63,7 +63,7 @@ export class ServerService {
       );
 
   delete$ = (serverId: number): Observable<CustomResponse> =>
-    this.http.delete<CustomResponse>(`${this.apiUrl}/server/ping/${serverId}`)
+    this.http.delete<CustomResponse>(`${this.apiUrl}/server/delete/${serverId}`)
       .pipe(
         tap(console.log),
         catchError(this.handleError)

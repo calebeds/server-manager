@@ -2,7 +2,7 @@ package io.gateways.server.enumeration;
 
 public enum Status {
     SERVER_UP("SERVER_UP"),
-    SERVER_DOWN("SERVER_DONW");
+    SERVER_DOWN("SERVER_DOWN");
     private final String status;
 
 

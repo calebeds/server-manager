@@ -25,16 +25,16 @@ public class ServerApplication {
 	CommandLineRunner run(ServerRepo serverRepo) {
 		return args -> {
 			serverRepo.save(new Server(null, "192.168.1.160", "Ubuntu Linux", "16 GB", 
-			"Personal PC", "https://localhosts/servers/images/server1.jpg", Status.SERVER_UP));
+			"Personal PC", "http://localhost:8080/server/image/server1.png", Status.SERVER_UP));
 
 			serverRepo.save(new Server(null, "192.165.1.160", "Fedora Linux", "16 GB", 
-			"Dell Tower", "https://localhosts/servers/images/server2.jpg", Status.SERVER_DOWN));
+			"Dell Tower", "http://localhost:8080/server/image/server2.png", Status.SERVER_DOWN));
 
 			serverRepo.save(new Server(null, "192.163.1.160", "MS 2008", "32 GB", 
-			"Web Server", "https://localhosts/servers/images/server1.jpg", Status.SERVER_UP));
+			"Web Server", "http://localhost:8080/server/image/server3.png", Status.SERVER_UP));
 
 			serverRepo.save(new Server(null, "193.168.1.160", "Red Hat Enterprise Linux", "64 GB", 
-			"Mail Server", "https://localhosts/servers/images/server2.jpg", Status.SERVER_DOWN));
+			"Mail Server", "http://localhost:8080/server/image/server1.png", Status.SERVER_DOWN));
 		};
 	}
 

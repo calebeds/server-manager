@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder//User the builder and set the values in some dinamic way
 @JsonInclude(Include.NON_NULL)//Do not send null values because it may happen
-public class Response { // This will be the response getted on the controller
+public class Response { // This will be the response gotten on the controller
     protected LocalDateTime timeStamp;
     protected int statusCode;
     protected HttpStatus status;
